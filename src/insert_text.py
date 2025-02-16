@@ -53,4 +53,4 @@ conversations = [
 # Insert conversations into the database
 insert_documents(conversations)
 
-print("✅ Data inserted successfully!")
+print("Data inserted successfully!")
