@@ -9,14 +9,15 @@ import webrtcvad
 import soundfile as sf
 from deepgram import DeepgramClient, PrerecordedOptions, FileSource
 from classify_command import classify_command
+from dotenv import load_dotenv
 
 # Picovoice API Key
-ACCESS_KEY = "bziOUVCEVsWrKDWAlEMC1ykpZr5MKK3THufjJACB3paF7oE3pHLPDg=="
-# ACCESS_KEY = "v+kNJKIepno7qf6H2K2Ucg5HQunEska7/sRY1CY4U5C/HL9FQsPbWA=="  # Replace with your Picovoice key
+load_dotenv()
+ACCESS_KEY = os.getenv("PICOVOICE_API_KEY")
 wake_word_file = "Hey-Pendant.ppn"  # Ensure this file exists in the script directory
 
-# Deepgram API Key
-DEEPGRAM_API_KEY = "81558636d0b88ce3ae9fd2e74706a50981c2133c"  # Replace with your Deepgram API key
+
+DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
 # Audio File
 output_file = "recorded_audio.wav"
@@ -106,7 +107,7 @@ def transcribe_audio_deepgram(audio_file):
         command = response.results.channels[0].alternatives[0].transcript
         print(f"Command to process: '{command}'")
         response = classify_command(command)
-        print(f"🤖 Model Response:\n{response}")
+        print(f" Model Response:\n{response}")
 
     except Exception as e:
         print(f"Exception in Deepgram transcription: {e}")
