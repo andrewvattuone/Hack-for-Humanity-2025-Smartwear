@@ -32,7 +32,7 @@ def create_reminder(command):
     print(response.choices[0].message.content)
 
     insert_documents([response.choices[0].message.content])
-    # print(f"🤖 Model Response:\n{response.choices[0].message.content}")
+    # print(f"Model Response:\n{response.choices[0].message.content}")
     # Return the generated response
 
 def find_reminder(command):
