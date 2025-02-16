@@ -39,7 +39,7 @@ def record_conversation():
     model = genai.GenerativeModel('gemini-pro')
 
     try:
-        print("🎙️ Recording... Say 'stop recording' to stop.")
+        print("Recording... Say 'stop recording' to stop.")
 
         frames = []
 
@@ -53,7 +53,7 @@ def record_conversation():
             frames.append(data)
             time.sleep(0.1)
 
-        print("🛑 Stopping recording...")
+        print("Stopping recording...")
 
     finally:
         stream.stop_stream()
@@ -67,7 +67,7 @@ def record_conversation():
             f.setframerate(sample_rate)
             f.writeframes(b''.join(frames))
 
-    print(f"💾 Audio saved to {output_file}")
+    print(f"Audio saved to {output_file}")
 
     # Transcribe the audio
     r = sr.Recognizer()
@@ -77,12 +77,12 @@ def record_conversation():
     try:
         transcription = r.recognize_google(audio)
         conversation = f"split it into sentences:\n{transcription}"
-        print(f"📝 Transcription: {conversation}")
+        print(f"Transcription: {conversation}")
         insert_documents([conversation])
     except sr.UnknownValueError:
-        print("🤷 Could not understand the audio")
+        print("Could not understand the audio")
     except Exception as e:
-        print(f"⚠️ Exception: {e}")
+        print(f"Exception: {e}")
 
 def listen_for_stop_keyword():
     """Listens for the stop keyword while recording."""
@@ -96,17 +96,17 @@ def listen_for_stop_keyword():
 
     while not stop_recording:
         with mic as source:
-            print("🎙️ Listening for stop keyword...")
+            print("Listening for stop keyword...")
             audio = recognizer.listen(source)
 
         try:
             text = recognizer.recognize_google(audio).lower()
-            print(f"🗣️ Heard: {text}")
+            print(f"Heard: {text}")
 
             if "stop recording" in text:
                 stop_recording = True
-                print("🛑 Stop keyword detected!")
+                print("Stop keyword detected!")
         except sr.UnknownValueError:
-            print("🤷 Couldn't understand the stop keyword.")
+            print("Couldn't understand the stop keyword.")
         except sr.RequestError as e:
-            print(f"⚠️ Error with speech recognition: {e}")
+            print(f"Error with speech recognition: {e}")
