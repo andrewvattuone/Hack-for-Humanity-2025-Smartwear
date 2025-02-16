@@ -40,11 +40,11 @@ def query_and_generate_response(user_query):
         temperature=0.7
     )
 
-    # print(f"🤖 Model Response:\n{response.choices[0].message.content}")
+    # print(f"Model Response:\n{response.choices[0].message.content}")
     # Return the generated response
     return response.choices[0].message.content
 
 # Accept user input and generate response
 # user_input = input("Enter your question: ")
 # response = query_and_generate_response(user_input)
-# print(f"🤖 Model Response:\n{response}")
+# print(f"Model Response:\n{response}")
