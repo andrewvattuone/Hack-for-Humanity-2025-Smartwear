@@ -8,10 +8,12 @@ import webrtcvad
 import soundfile as sf
 from deepgram import DeepgramClient, PrerecordedOptions, FileSource
 from db_utils import insert_documents
+from dotenv import load_dotenv
 
 # Deepgram API Key
 def record_conversation():
-    DEEPGRAM_API_KEY = "81558636d0b88ce3ae9fd2e74706a50981c2133c"
+    load_dotenv()
+    DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
     # Audio File
     output_file = "recorded_audio.wav"
@@ -30,7 +32,7 @@ def record_conversation():
 
     def record_until_keyword():
         """Records audio until the keywords 'stop conversation' or 'end conversation' are detected."""
-        print("🎙️ Recording... Say 'stop conversation' or 'end conversation' to stop.")
+        print("Recording... Say 'stop conversation' or 'end conversation' to stop.")
 
         frames = []
         sample_rate = 16000
@@ -47,19 +49,19 @@ def record_conversation():
                 if check_for_stop_keyword(output_file):
                     break
 
-        print("🛑 Stopping recording.")
+        print("Stopping recording.")
 
     def save_audio(frames):
         """Saves recorded audio to a file."""
         audio_data = b"".join(frames)
         audio_array = np.frombuffer(audio_data, dtype=np.int16)
         sf.write(output_file, audio_array, 16000)
-        print(f"💾 Audio saved to {output_file}")
+        print(f"Audio saved to {output_file}")
 
     def check_for_stop_keyword(audio_file):
         """Transcribes the audio and checks for stop keywords."""
         try:
-            print("🔍 Analyzing audio for stop keywords...")
+            print("Analyzing audio for stop keywords...")
 
             # Initialize Deepgram client
             deepgram = DeepgramClient(DEEPGRAM_API_KEY)
@@ -83,21 +85,21 @@ def record_conversation():
 
             # Extract the transcript
             transcript = response.results.channels[0].alternatives[0].transcript.lower()
-            print(f"📝 Transcription: {transcript}")
+            print(f"Transcription: {transcript}")
 
             # Check for stop keywords
             if "stop conversation" in transcript or "end conversation" in transcript:
                 return True
 
         except Exception as e:
-            print(f"❌ Error during transcription: {e}")
+            print(f"Error during transcription: {e}")
 
         return False
 
     def transcribe_final_audio():
         """Transcribes the final audio and prints the text."""
         try:
-            print("🎙️ Sending final audio to Deepgram for transcription...")
+            print("Sending final audio to Deepgram for transcription...")
 
             # Initialize Deepgram client
             deepgram = DeepgramClient(DEEPGRAM_API_KEY)
@@ -124,14 +126,14 @@ def record_conversation():
             insert_documents([transcript])
 
         except Exception as e:
-            print(f"❌ Error during final transcription: {e}")
+            print(f"Error during final transcription: {e}")
 
-    print("🎙️ Starting immediate recording...")
+    print("Starting immediate recording...")
     try:
         record_until_keyword()
         transcribe_final_audio()
     except KeyboardInterrupt:
-        print("🔴 Recording interrupted by user.")
+        print("Recording interrupted by user.")
     finally:
         stream.stop_stream()
         stream.close()
