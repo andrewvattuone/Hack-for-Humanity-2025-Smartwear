@@ -47,7 +47,7 @@ def insert_documents(documents, collection_name="text_embeddings"):
         collection.upsert(documents=documents, embeddings=embeddings, ids=ids)
         after_count = collection.count()
 
-    print(f"✅ Inserted {after_count - before_count} documents.")
+    print(f"Inserted {after_count - before_count} documents.")
 
 
 # def insert_documents(documents, collection_name="text_embeddings"):
@@ -72,7 +72,7 @@ def insert_documents(documents, collection_name="text_embeddings"):
 #     client = get_client()
 #     client.get_collection(collection_name).count()  # Forces a cache refresh
 
-#     print(f"✅ Inserted/updated {len(documents)} documents.")
+#     print(f"Inserted/updated {len(documents)} documents.")
 
 def query_documents(query, top_k=3, collection_name="text_embeddings"):
     """Query the database for the most recent documents."""
